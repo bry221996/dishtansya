@@ -19,12 +19,17 @@ class OrderController extends Controller
         if ($product->available_stock < $request->quantity) {
 
             return response()
-                ->json(['message' => 'Failed to order this product due to unavailability of the stock'], 400);
+                ->json([
+                    'message' => __('messages.order.create.unavailable_stock')
+                ], 400);
         }
 
         $product->decrement('available_stock', $request->quantity);
 
         return response()
-            ->json(['message' => 'You have successfully ordered this product'], 201);
+            ->json(
+                ['message' => __('messages.order.create.success')],
+                201
+            );
     }
 }

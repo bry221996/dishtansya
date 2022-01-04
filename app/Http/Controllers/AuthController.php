@@ -19,7 +19,10 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()
+                ->json([
+                    'message' => __('messages.auth.login.invalid_credentials')
+                ], 401);
         }
 
         return response()->json(['access_token' => $token], 201);
@@ -38,7 +41,10 @@ class AuthController extends Controller
         ]);
 
         if (User::where('email', $request->email)->exists()) {
-            return response()->json(['message' => 'Email already taken'], 400);
+            return response()
+                ->json([
+                    'message' => __('messages.auth.register.email_already_taken')
+                ], 400);
         }
 
         User::create([
@@ -46,6 +52,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return response()->json(['message' => 'User successfully registered'], 201);
+        return response()
+            ->json(['message' => __('messages.auth.register.success')], 201);
     }
 }
