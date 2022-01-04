@@ -3,7 +3,8 @@
 return [
     'auth' => [
         'login' => [
-            'invalid_credentials' => 'Invalid credentials'
+            'failed' => 'Invalid credentials',
+            'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
         ],
         'register' => [
             'success' => 'User successfully registered',

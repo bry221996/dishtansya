@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -14,19 +15,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:3'
-        ]);
-
-        if (!$token = auth()->attempt($credentials)) {
-            return response()
-                ->json([
-                    'message' => __('messages.auth.login.invalid_credentials')
-                ], 401);
-        }
+        $token = $request->authenticate();
 
         return response()->json(['access_token' => $token], 201);
     }
